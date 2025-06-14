@@ -69,3 +69,5 @@ if __name__ == "__main__":
     discord_thread.start()
     # Chạy Flask app
     app.run(port=5000)
+
+# Đổi tên file này thành github_guardian.py để import được trong wsgi.py
