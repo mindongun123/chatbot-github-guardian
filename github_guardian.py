@@ -60,6 +60,18 @@ def check_for_changes():
     else:
         return "Discord bot chưa sẵn sàng!"
 
+@app.route('/github-webhook', methods=['POST'])
+def github_webhook():
+    data = request.json
+    # Thông báo commit mới
+    if 'commits' in data:
+        for commit in data['commits']:
+            msg = f"[GitHub] Repo: {data.get('repository', {}).get('full_name', '')}\nTác giả: {commit.get('author', {}).get('name', '')}\nNội dung: {commit.get('message', '')}"
+            if loop:
+                asyncio.run_coroutine_threadsafe(send_to_discord(msg), loop)
+    # Có thể mở rộng thêm các sự kiện khác (pull request, issue, ...)
+    return '', 204
+
 def run_discord_bot():
     client.run(TOKEN)
 
